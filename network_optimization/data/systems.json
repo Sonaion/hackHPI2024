@@ -184,7 +184,7 @@
       "operatingCost": 0,
       "co2": 0,
       "input": {
-        "energy": "heatingPotential"
+        "energy": "districtHeatingPotential"
       },
       "output": {
         "energy": "DistrictHeating (Transport)",
