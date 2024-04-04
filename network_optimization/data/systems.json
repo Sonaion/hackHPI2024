@@ -3,8 +3,8 @@
     "Photovoltaics": {
       "name": "Photovoltaics",
       "area": 1,
-      "invest": 1.25,
-      "operatingCost": 0.021,
+      "invest": 800,
+      "operatingCost": 0.00166666666,
       "co2": 0.065,
       "input": {
         "energy": "pv_potential"
@@ -18,10 +18,10 @@
       ]
     },
     "SolarThermal": {
-      "name": "Solarthermie",
+      "name": "SolarThermal",
       "area": 1,
-      "invest": 0.4166666666666667,
-      "operatingCost": 0.006,
+      "invest": 250,
+      "operatingCost": 0.003,
       "co2": 0.004,
       "input": {
         "energy": "pv_potential"
@@ -35,10 +35,10 @@
       ]
     },
     "Transformer": {
-      "name": "Transformator",
+      "name": "Transformer",
       "area": 0,
-      "invest": 0.11916666666666667,
-      "operatingCost": 0.002,
+      "invest": 715,
+      "operatingCost": 0.00023,
       "co2": 0.0001,
       "input": {
         "energy": "Electro (Transport)"
@@ -54,10 +54,10 @@
       ]
     },
     "HouseConnection": {
-      "name": "Transformator",
+      "name": "HouseConnection",
       "area": 0,
-      "invest": 0.012,
-      "operatingCost": 0.0001,
+      "invest": 72,
+      "operatingCost": 0.00016,
       "co2": 0.0001,
       "input": {
         "energy": "Electro (Transport)",
@@ -80,11 +80,12 @@
       ]
     },
     "Heatpump AirWater (small)": {
-      "name": "Wärmepumpe",
+      "name": "Heatpump AirWater (small)",
+      "min": 0,
       "area": 0,
-      "invest": 0.35,
-      "operatingCost": 0.0073,
-      "co2": 0.0003,
+      "invest": 1400,
+      "operatingCost": 0.007,
+      "co2": 0,
       "input": {
         "energy": "Electro (Transport)"
       },
@@ -104,11 +105,12 @@
       ]
     },
     "Heatpump AirWater (medium)": {
-      "name": "Wärmepumpe",
-      "invest": 0.175,
+      "name": "Heatpump AirWater (medium)",
+      "min": 100,
+      "invest": 700,
       "area": 0,
-      "operatingCost": 0.0042,
-      "co2": 0.0002,
+      "operatingCost": 0.0065,
+      "co2": 0,
       "input": {
         "energy": "Electro"
       },
@@ -128,11 +130,12 @@
       ]
     },
     "Heatpump AirWater (big)": {
-      "name": "Wärmepumpe",
-      "invest": 0.1125,
+      "name": "Heatpump AirWater (big)",
+      "min": 1500,
+      "invest": 450,
       "area": 0,
-      "operatingCost": 0.00212,
-      "co2": 0.0001,
+      "operatingCost": 0.006,
+      "co2": 0,
       "input": {
         "energy": "Electro (Transport)"
       },
@@ -152,10 +155,10 @@
       ]
     },
     "HeatingElement": {
-      "name": "Wärmepumpe",
-      "invest": 0.0375,
+      "name": "HeatingElement",
+      "invest": 150,
       "area": 0,
-      "operatingCost": 0.0008,
+      "operatingCost": 0.00025,
       "co2": 0,
       "input": {
         "energy": "Electro"
@@ -175,10 +178,10 @@
       ]
     },
     "DistrictHeatingCreator": {
-      "name": "Abwärmeanschluss",
-      "invest": 0.03333333333333333,
+      "name": "DistrictHeatingCreator",
+      "invest": 200,
       "area": 0,
-      "operatingCost": 0.000111,
+      "operatingCost": 0,
       "co2": 0,
       "input": {
         "energy": "heatingPotential"
@@ -192,10 +195,10 @@
       ]
     },
     "DistrictHeatingConnection": {
-      "name": "Fernwärmeanschluss",
-      "invest": 0.0125,
-      "area": 0,
-      "operatingCost": 0.00025,
+      "name": "DistrictHeatingConnection",
+      "invest": 15,
+      "area": 0.01,
+      "operatingCost": 1.25e-05,
       "co2": 0,
       "input": {
         "energy": "DistrictHeating (Transport)"
@@ -214,35 +217,11 @@
         "farm"
       ]
     },
-    "GasBoiler": {
-      "name": "Elektrokraftwerk",
-      "invest": 0.075,
-      "area": 0,
-      "operatingCost": 0.00015,
-      "co2": 0.06,
-      "input": {
-        "energy": "Gas (Transport)"
-      },
-      "output": {
-        "energy": "Heating",
-        "factor": 1
-      },
-      "canBeUsedBy": [
-        "residential",
-        "industrial",
-        "commercial",
-        "high_density_residential",
-        "construction",
-        "retail",
-        "transport",
-        "farm"
-      ]
-    },
     "OilBoiler": {
-      "name": "Elektrokraftwerk",
+      "name": "OilBoiler",
       "area": 0,
-      "invest": 0.075,
-      "operatingCost": 0.10015,
+      "invest": 0,
+      "operatingCost": 0.14,
       "co2": 0.3,
       "input": {
         "energy": "heatingOil"
@@ -262,37 +241,20 @@
         "farm"
       ]
     },
-    "GasIntake": {
-        "name": "Gasanschluss",
-        "area": 0,
-        "invest": 0,
-        "operatingCost": 0.12,
-        "co2": 0.2,
-        "input": {
-            "energy": "gasPotential",
-            "costs": 0,
-            "co2": 0
-        },
-        "output": {
-            "energy": "Gas (Transport)",
-            "co2": 0,
-            "factor": 1
-        },
-        "canBeUsedBy": [
-            "industrial"
-        ]
-    },
     "ElectricPowerPlant": {
-      "name": "Elektrokraftwerk",
+      "name": "ElectricPowerPlant",
       "invest": 0,
       "area": 0,
-      "operatingCost": 0.27,
+      "operatingCost": 0.43,
       "co2": 0.4,
       "input": {
-        "energy": "powerPlantPotential"
+        "energy": "powerPlantPotential",
+        "costs": 0,
+        "co2": 0
       },
       "output": {
         "energy": "Electro (Transport)",
+        "co2": 0,
         "factor": 1
       },
       "canBeUsedBy": [
@@ -302,93 +264,62 @@
   },
   "storages": {
     "ElectricityStorage": {
-      "name": "Stromspeicher",
-      "loss": 0.01,
-      "invest": 0.1,
-      "operatingCost": 0.01,
-      "co2": 0,
+      "name": "ElectricityStorage",
+      "lossPerHour": 0.001,
+      "invest": 800,
+      "operatingCost": 0.8,
+      "co2": 0.05,
       "energy": "Electro (Transport)"
     },
-    "GasStorage": {
-      "name": "Gasspeicher",
-      "loss": 0.01,
-      "invest": 0.1,
-      "operatingCost": 0.01,
-      "co2": 0,
-      "energy": "Gas (Transport)"
-    },
     "HeatStorage": {
-      "name": "Wärmespeicher",
-      "loss": 0.01,
-      "invest": 0.1,
-      "operatingCost": 0.01,
-      "co2": 0,
+      "name": "HeatStorage",
+      "lossPerHour": 0.01,
+      "invest": 100,
+      "operatingCost": 0.1,
+      "co2": 0.001,
       "energy": "Heating"
     }
   },
   "line": {
     "PowerLine": {
-      "name": "Stromleitung",
-      "lossPerM": 0.0001,
-      "invest": 0.1,
-      "operatingCost": 0.01,
+      "name": "PowerLine",
+      "lossPerM": 0,
+      "investPerM": 0,
+      "operatingCost": 0,
       "co2": 0,
+      "min": null,
       "max": null,
       "energy": "Electro (Transport)"
     },
     "DistrictHeatingLine (small)": {
-      "name": "Fernwärmeleitung",
-      "lossPerM": 0.01,
-      "invest": 0.1,
+      "name": "DistrictHeatingLine (small)",
+      "lossPerM": 0.001,
+      "investPerM": 445,
       "operatingCost": 0.01,
       "co2": 0,
-      "max": null,
+      "min": 0,
+      "max": 55,
       "energy": "DistrictHeating (Transport)"
     },
     "DistrictHeatingLine (medium)": {
-      "name": "Fernwärmeleitung",
-      "lossPerM": 0.01,
-      "invest": 0.1,
+      "name": "DistrictHeatingLine (medium)",
+      "lossPerM": 0.00095,
+      "investPerM": 555,
       "operatingCost": 0.01,
       "co2": 0,
-      "max": null,
+      "min": 55,
+      "max": 900,
       "energy": "DistrictHeating (Transport)"
     },
     "DistrictHeatingLine (big)": {
-      "name": "Fernwärmeleitung",
-      "lossPerM": 0.01,
-      "invest": 0.1,
+      "name": "DistrictHeatingLine (big)",
+      "lossPerM": 0.0009,
+      "investPerM": 765,
       "operatingCost": 0.01,
       "co2": 0,
+      "min": 6000,
       "max": null,
       "energy": "DistrictHeating (Transport)"
-    },
-    "GasLine (small)": {
-      "name": "Fernwärmeleitung",
-      "lossPerM": 0.01,
-      "invest": 0.1,
-      "operatingCost": 0.01,
-      "co2": 0,
-      "max": null,
-      "energy": "Gas (Transport)"
-    },
-    "GasLine (medium)": {
-      "name": "Fernwärmeleitung",
-      "lossPerM": 0.01,
-      "invest": 0.1,
-      "operatingCost": 0.01,
-      "co2": 0,
-      "max": null,
-      "energy": "Gas (Transport)"
-    },
-    "GasLine (big)": {
-      "name": "Fernwärmeleitung",
-      "lossPerM": 0.01,
-      "invest": 0.1,
-      "operatingCost": 0.01,
-      "co2": 0,
-      "max": null,
-      "energy": "Gas (Transport)"
     }
   }
 }
