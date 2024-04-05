@@ -8,98 +8,78 @@
 
 ---
 
-Im Kontext der Energiewende muss nicht nur die Industrie und jeder Privathaushalt
-seinen energetischen Konzepte neu denken um den Co2 Fußabdruck zu senken, das ganze gilt auch für Städte und Kommunen. 
-Ein großer Teil dieses Wandelns ist die Kommunale Wärmeplanung und der einsatz ernuerbarer Energien um Bedarfe zu decken.
+Im context of the energy transition, not only the industry and every household must rethink their energy concepts to reduce the CO2 footprint, but this also applies to cities and municipalities. A significant part of this transition is municipal heat planning and the use of renewable energies to meet demands.
 
-Die Planung dieser werden aktuell zumeinst manuell getätigt und bieten potential automatisiert gelöst zu werden.
-Im Kontext dieser Aufgabe geht es darum einen Algorithmus zu schreiben, welcher eine Energiekonzept Planung für eine
-Stadt ermöglicht, dabei werden annahmen getroffen, welche die umsetzung innerhalb von 24h ermöglichen sollten.
-Darunter gilt unter andrem, dass die gegeben Städte keine Bestands Anlagen haben um Energie zu beziehen.
-Dementsprechend darf die Planung von Grund auf neu gestaltet werden.
+Currently, these planning processes are mostly done manually, presenting an opportunity for automation. The task at hand involves writing an algorithm that enables energy concept planning for a city, making assumptions that should allow implementation within 24 hours. One of these assumptions is that the given cities do not have existing facilities to source energy from, thus allowing for a complete redesign of the planning process from scratch.
 
-Hierfür werden Stadtdaten bereitgestellt welche via dem Preprocessing Script aus den OSM Daten via der Overpass API
-gezogen wurden, der Prozess kann für beliebige Städte durchgeführt werden, siehe [01_CityDataPreprocessing.ipynb](01_CityDataPreprocessing.ipynb). 
-Diese Daten beinhalten Gebäudedaten und deren Nutzungsdaten, Straßendaten und Daten für Nutzbarkeit von erneuerbaren Energien wie Photo Voltaik und
-Solarthermie.
+For this purpose, city data is provided, which has been extracted from OSM data via the Overpass API using a preprocessing script. This process can be applied to any city, as demonstrated in 01_CityDataPreprocessing.ipynb. These data include building data and usage information, street data, and data on the feasibility of renewable energies such as photovoltaics and solar thermal.
 
-Weiterhin werden Daten für Erzeuger, Speicher und Leitungen in einfachster form bereitgestellt. 
-Diese Daten beinhalten die Investitionskosten, Betriebskosten und CO2 Emissionen.
-Am Ende soll das Programm zu ein Energiekonzept erschließen, welches die Investitionskosten, Betriebskosten und CO2 Emissionen berechnet 
-und basierend auf gegebenen Gewichtungen optimiert. Diese Zielwerte werden am Ende mittels diesen Gewichtungen zusammen gerechnet um einen 
-Fitness wert zu berechnen, welcher die Güte der Lösung bestimmt. Das Ziel ist es dementsprechend diesen Fitness wert zu minimieren.
-Diese Zielfunktionen sind dabei wie folgt definiert:
+Additionally, data for producers, storage, and pipelines are provided in the simplest form. These data include investment costs, operating costs, and CO2 emissions. Ultimately, the program should develop an energy concept that calculates investment costs, operating costs, and CO2 emissions, optimizing based on given weights. These target values are then summed using these weights to calculate a fitness value, which determines the quality of the solution. The goal is to minimize this fitness value accordingly.
+
+The objective functions are defined as follows:
 
 ```math
-investFaktor * Gesamtinvestkosten + betriebstksotenFaktor * GeamtBetriebskosten + co2Faktor * GesamtCO2Emissionen
+investFaktor * totalInvest + operatingFactor * operatingCosts + co2Faktor * totalCo2Emission
 ```
 
-Die Summe der Faktoren kann dabei als '1' angenommen werden.
+The sum of the factors can be assumed to be '1'.
 
-Am Ende soll ein Netzwerk auf den Stadtdaten herrauskommen, welche die Erzeuger und Leitungen dimensioniert und deren
-Betriebsverhalten anhand von den 2 gegeben Referenztagen auf das Jahr hochrechnet. 
-Für die genaue Datenstruktur und die Schnittstellen wird in den folgenden Abschnitten eingegangen-
+At the end, a network should emerge from the city data, which sizes the producers and pipelines and extrapolates their operating behavior based on the two given reference days to the entire year. The exact data structure and interfaces will be discussed in the following sections.
 
-## Getroffene Annahmen/ Gegebene Parameter
+## Assumptions Made / Given Parameters
 
-- Es gibt eine Stadt mit Gebäuden mit spezifischen Nutzungsdaten, Straßendaten, und Flächendaten für erneuerbare Energien.
-- Es gibt Erzeuger, Leitungen und optional Speicher
-- Erzeuger, Leittungen und Speicher haben Investitionskosten, Betriebskosten und CO2 Emissionen
-- Erzeuger und Speicher können nur auf den jeweils angegeben Flächen gebaut werden und haben ein Leistungspotential was
-  sich stets auf die Fläche in m² bezieht
-- Leitungen können nur auf den Straßen gebaut werden und haben eine Länge in m
-- Gebäude haben Energiebedarfe die spezifisch pro m² angegeben werden und hochgerechnet werden müssen
-- Energiebedarfe liegen für einen Referenz Sommer- und Wintertag ab.
-- Es sind Energie Potentiale in [potentials](data/loadprofiles/summer/potentials.json) vorgegeben, wo beschrieben wird, wieviel Energie pro m^2 einer gewissenen Energie genutzt werden kann.
-- Es gibt eine Gewichtung die die Investitionskosten, Instandhaltungskosten und CO2 Emissionen berücksichtigt
-- Pro Fläche können nicht mehr Erzeuger, Speicher bereitgestellt werden als es die Fläche zulässt.
-- Energienetze können von Eckpunkten von Flächen/ Gebäuden zum nächst befindlichen Straßenpunkt gebaut werden.
-- Leitungen haben pro m einen Energieverlust
-- Speicher haben pro h einen Energieverlust
-- 'operatingCost' und 'co2' sind Werte die pro Nutzung einer Enität gezahlt werden müssen.
-- 'invest' muss nur einmal pro gewählter Entität bezahlt werden
-- pro Nutzungstype sind die Bedarfe in [Sommer/Winter](data/loadprofiles/summer) gegeben. 
-- Es gibt Sommer und Winter Referenzdaten, diese sollen jeweils auf 180 Tage hochgerechnet werden um ein ganzes Jahr zu betrachten.
+- There is a city with buildings containing specific usage data, street data, and area data for renewable energies.
+- There are generators, pipelines, and optionally, storage facilities.
+- Generators, pipelines, and storage facilities have investment costs, operating costs, and CO2 emissions.
+- Generators and storage facilities can only be built on the specified areas and have a power potential that is always referenced to the area in square meters.
+- Pipelines can only be built on the streets and have a length in meters.
+- Buildings have energy demands specified per square meter and need to be extrapolated.
+- Energy demands are provided for a reference summer and winter day.
+- Energy potentials are specified in [potentials](data/loadprofiles/summer/potentials.json), indicating how much energy per square meter of a certain energy type can be utilized.
+- There is a weighting that considers investment costs, maintenance costs, and CO2 emissions.
+- Only a limited number of generators, storage facilities can be provided per area, based on available space.
+- Energy networks can be built from vertices of areas/buildings to the nearest street point.
+- Pipelines have energy loss per meter.
+- Storage facilities have energy loss per hour.
+- 'operatingCost' and 'co2' are values that must be paid for each use of an entity.
+- 'invest' only needs to be paid once per selected entity.
+- Energy demands for each usage type are provided in [summer/winter](data/loadprofiles/summer).
+- There are summer and winter reference data, which should be extrapolated to 180 days each to consider a whole year.
 
-## Aufgabe
+## Task
 
-Schreibe ein Programm, welche die Input Datein einer Stadt entgegennimmt und ein Energiekonzept erstellt. Die Inputdateien
-beinhaltet die Stadt-, Erzeuger-, Speicher-, Leitungen, Energiepotential und Bedarfsinformationen.
-Diese sind in folgenden Files:
+Write a program that accepts the input files of a city and creates an energy concept. The input files include city, generator, storage, pipeline, energy potential, and demand information. These are provided in the following files:
 [Potsdam](data/total_Potsdam.json)
 [Systems](data/systems.json)
-[Referenzlastgänge](data/loadprofiles/summer)
+[Reference Load Profiles](data/loadprofiles/summer)
 
+The program should generate an output file indicating, for each area, which generators and storage facilities were built there. It should also specify how much energy is produced per hour and which pipelines or demands they cover. At the end, key metrics should be provided, such as the total investment costs, operating costs, and CO2 emissions generated by the concept.
 
-Das Programm soll eine Outputdatei erstellen, welche bezüglich jeder Fläche angibt, welche Erzeuger und Speicher auf
-dieser gebaut wurden.
-Wieviel Energie pro Stunde produziert wird und ber welche Leitungen oder welche Bedarfe diese decken.
-Am ende sollen weiterhin kennzahlen ausgegeben werden wieviel Investitionskosten, Betriebskosten und CO2
-Emissionen durch das Konzept entstehen.
-Leitungen können dabei stets nur von und zu in der inputdatei angegebenen Punkten (Straßen bzw. Eckpunkte von ) gezogen werden.
+Pipelines can only be drawn from and to points specified in the input files (streets or corners of buildings).
 
 ## Output format
 
-Das format des Outputs kann frei gewählt werden soll aber die folgenden Inhalte behalten.
 
-Gebe in einer JSON Datei folgende Informationen aus:
-- Gesamt Investitionskosten
-- Gesamt Betriebskosten
-- Gesamt CO2 Emissionen
+The format of the output can be freely chosen but should retain the following contents.
 
-Gebe für jeden Erzeuger, Leitung und optional Speicher folgende Informationen aus:
-- Gesamt Investitionskosten
-- Gesamt Betriebskosten
-- Gesamt CO2 Emissionen
+Output the following information in a JSON file:
+- Total investment costs
+- Total operating costs
+- Total CO2 emissions
 
-Gebe für jede Fläche/ Gebäude folgende Informationen aus:
-- Welche Erzeuger, Speicher in welcher quantität auf dieser Fläche gebaut wurden
-- Pro Erzeuger, Speicher:
-  - wieviel Energie in der jeweiligen Stunde produziert wurde
-  - (optional Speicher) wieivel in den Speicher geladen/ entladen wurde und wie der Speicherstand ist.
+For each generator, pipeline, and optionally storage, output the following information:
+- Total investment costs
+- Total operating costs
+- Total CO2 emissions
 
-Gebe für jede Leitung folgende Informationen aus:
-- Wieviel Energie in der jeweiligen Stunde durch jedes Leitungssegment fließt.
-- Wieviel verluste durch die Leitung entstehen
+For each area/building, output the following information:
+- Which generators, storage facilities were built on this area and in what quantity
+- For each generator, storage:
+  - how much energy was produced in each respective hour
+  - (optional storage) how much was loaded/unloaded into the storage and its current level.
 
-Finde eine Datenstruktur die den Netzwerk gut als Graphen abbildet.
+For each pipeline, output the following information:
+- How much energy flows through each segment of the pipeline in each respective hour.
+- How much loss is incurred by the pipeline.
+
+Find a data structure that maps the network well as a graph.
