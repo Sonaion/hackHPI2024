@@ -44,3 +44,18 @@ def get_point_id(point):
 
 def get_point_cords(point_id):
     return point_id.split("lat<")[1].split(">lon<")[0], point_id.split("lat<")[1].split(">lon<")[1].split(">")[0]
+
+
+def get_nearst_road_point(point, network):
+    nearest_point = (None, None)
+
+    for point_id, _ in network.items():
+        if nearest_point[0] is None:
+            nearest_point = (point_id, calc_distance(
+                point, get_point_cords(point_id)))
+        else:
+            dist = calc_distance(point, get_point_cords(point_id))
+            if dist < nearest_point[1]:
+                nearest_point = (point_id, dist)
+
+    return nearest_point
