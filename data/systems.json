@@ -4,8 +4,8 @@
       "name": "Photovoltaics",
       "area": 1,
       "invest": 800,
-      "operatingCost": 0.00166666666,
-      "co2": 0.065,
+      "operatingCost": 0,
+      "co2": 0,
       "input": {
         "energy": "pv_potential"
       },
@@ -21,8 +21,8 @@
       "name": "SolarThermal",
       "area": 1,
       "invest": 250,
-      "operatingCost": 0.003,
-      "co2": 0.004,
+      "operatingCost": 0,
+      "co2": 0,
       "input": {
         "energy": "pv_potential"
       },
@@ -38,8 +38,8 @@
       "name": "Transformer",
       "area": 0,
       "invest": 715,
-      "operatingCost": 0.00023,
-      "co2": 0.0001,
+      "operatingCost": 0,
+      "co2": 0,
       "input": {
         "energy": "Electro (Transport)"
       },
@@ -57,8 +57,8 @@
       "name": "HouseConnection",
       "area": 0,
       "invest": 72,
-      "operatingCost": 0.00016,
-      "co2": 0.0001,
+      "operatingCost": 0,
+      "co2": 0,
       "input": {
         "energy": "Electro (Transport)"
       },
@@ -81,7 +81,7 @@
       "min": 0,
       "area": 0,
       "invest": 1400,
-      "operatingCost": 0.007,
+      "operatingCost": 0,
       "co2": 0,
       "input": {
         "energy": "Electro (Transport)"
@@ -106,10 +106,10 @@
       "min": 100,
       "invest": 700,
       "area": 0,
-      "operatingCost": 0.0065,
+      "operatingCost": 0,
       "co2": 0,
       "input": {
-        "energy": "Electro"
+        "energy": "Electro (Transport)"
       },
       "output": {
         "energy": "Heating",
@@ -131,7 +131,7 @@
       "min": 1500,
       "invest": 450,
       "area": 0,
-      "operatingCost": 0.006,
+      "operatingCost": 0,
       "co2": 0,
       "input": {
         "energy": "Electro (Transport)"
@@ -155,7 +155,7 @@
       "name": "HeatingElement",
       "invest": 150,
       "area": 0,
-      "operatingCost": 0.00025,
+      "operatingCost": 0,
       "co2": 0,
       "input": {
         "energy": "Electro"
@@ -194,8 +194,8 @@
     "DistrictHeatingConnection": {
       "name": "DistrictHeatingConnection",
       "invest": 15,
-      "area": 0.01,
-      "operatingCost": 1.25e-05,
+      "area": 0,
+      "operatingCost": 0,
       "co2": 0,
       "input": {
         "energy": "DistrictHeating (Transport)"
@@ -291,7 +291,6 @@
       "investPerM": 445,
       "operatingCost": 0.01,
       "co2": 0,
-      "min": 0,
       "max": 55,
       "energy": "DistrictHeating (Transport)"
     },
@@ -301,7 +300,6 @@
       "investPerM": 555,
       "operatingCost": 0.01,
       "co2": 0,
-      "min": 55,
       "max": 900,
       "energy": "DistrictHeating (Transport)"
     },
@@ -311,7 +309,6 @@
       "investPerM": 765,
       "operatingCost": 0.01,
       "co2": 0,
-      "min": 6000,
       "max": null,
       "energy": "DistrictHeating (Transport)"
     }
