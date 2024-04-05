@@ -1,5 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,venv,git,windows,linux,macos,visualstudiocode,jetbrains
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,venv,git,windows,linux,macos,visualstudiocode,jetbrains
+etc/
+share/
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
