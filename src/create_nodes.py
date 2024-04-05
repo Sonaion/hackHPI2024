@@ -1,5 +1,16 @@
+import json
+
 from src.nodes.area import Area
 from src.nodes.building import Building
+
+def create_graph(path = './data/total_Potsdam_with_energies.json'):
+    data = read_data(path)
+
+    areas = create_areas(data['areas'])
+    buildings = create_buildings(data['buildings'])
+
+    return areas, buildings
+
 
 def create_areas(data):
     areas = []
@@ -26,3 +37,11 @@ def create_buildings(data):
         ))
 
     return buildings
+
+def read_data(path: str):
+    # Read JSON string from file
+    with open(path, 'r') as file:
+        json_string = file.read()
+
+    # Convert JSON string to a Python dictionary
+    return json.loads(json_string)

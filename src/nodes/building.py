@@ -6,9 +6,9 @@ class Building:
         self.type = type
 
         self.summer_electricity_consumption = Consumption(summer_consumption['Electro'])
-        self.summer_heating_consumption = Consumption(summer_consumption['Heating'])
+        self.summer_heating_consumption = Consumption(summer_consumption['Heating']) if 'Heating' in summer_consumption else None
         self.winter_electricity_consumption = Consumption(winter_consumption['Electro'])
-        self.winter_heating_consumption = Consumption(winter_consumption['Heating'])
+        self.winter_heating_consumption = Consumption(winter_consumption['Heating']) if 'Heating' in winter_consumption else None
 
         self.points = points
         self.avg_point = self.calculate_avg_point()
