@@ -50,7 +50,7 @@ will be discussed in the following sections.
 - Pipelines can only be built on the streets and have a length in meters.
 - Buildings have energy demands specified per square meter and need to be extrapolated.
 - Energy demands are provided for a reference summer and winter day.
-- Energy potentials are specified in [potentials](data/loadprofiles/summer/potentials.json), indicating how much energy
+- Energy potentials are specified in [potentials](data/loadprofiles/potentials_summer.json), indicating how much energy
   per square meter of a certain energy type can be utilized.
 - There is a weighting that considers investment costs, maintenance costs, and CO2 emissions.
 - Only a limited number of generators, storage facilities can be provided per area, based on available space.
