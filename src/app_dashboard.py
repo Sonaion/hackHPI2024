@@ -1,5 +1,4 @@
 import json
-
 import plotly.graph_objects as go
 import streamlit as st
 
@@ -128,7 +127,7 @@ def main():
         reset_store()
 
     input_file = st.sidebar.file_uploader("Upload File", on_change=upload_callback)
-    default_file_path = "./total_Freyburg (Unstrut).json"
+    default_file_path = "./data/total_Potsdam.json"
     default_file = json.load(open(default_file_path, "r"))
 
     # Define a Store

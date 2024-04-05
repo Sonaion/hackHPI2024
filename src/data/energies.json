@@ -4,11 +4,5 @@
   },
   "Heating" : {
     "name" : "Heating"
-  },
-  "Gas" : {
-    "name" : "Gas"
-  },
-  "Heating Oil" : {
-    "name" : "Heating Oil"
   }
 }

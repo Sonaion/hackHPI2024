@@ -61,6 +61,8 @@ will be discussed in the following sections.
 - 'invest' only needs to be paid once per selected entity.
 - Energy demands for each usage type are provided in [summer/winter](data/loadprofiles/summer).
 - There are summer and winter reference data, which should be extrapolated to 180 days each to consider a whole year.
+- Every building has its corresponding Reference Winter and Summer days. Winter should be the first 3 and last 3 months of the year. Summer are the other months
+- Calculate the costs for 25 years.
 
 ## Task
 
