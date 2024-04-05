@@ -2,12 +2,15 @@ import json
 
 from src.nodes.area import Area
 from src.nodes.building import Building
+from src.filter import filter_data
 
 def create_graph(path = './data/total_Potsdam_with_energies.json'):
     data = read_data(path)
 
     areas = create_areas(data['areas'])
     buildings = create_buildings(data['buildings'])
+
+    data = filter_data(buildings, areas, roads=[])
 
     return areas, buildings
 
