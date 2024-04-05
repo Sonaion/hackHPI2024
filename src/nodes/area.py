@@ -1,3 +1,5 @@
+import math
+
 class Area:
     def __init__(self, id, type, points):
         self.id = id
@@ -19,13 +21,20 @@ class Area:
             'lon': avg_lon
         }
 
-    def calculate_area(self):
-        # calculate the area of the polygon
-        n = len(self.factored_points)
+    def calculate_area(points):
+        # Earth's radius in meters
+        R = 6378137
         area = 0.0
+
+        # Convert all coordinates from degrees to radians
+        points_rad = [{'lat': math.radians(p['lat']), 'lon': math.radians(p['lon'])} for p in points]
+
+        n = len(points_rad)
         for i in range(n):
             j = (i + 1) % n
-            area += self.factored_points[i]['lat'] * self.factored_points[j]['lon']
-            area -= self.factored_points[j]['lat'] * self.factored_points[i]['lon']
-        area = abs(area) / 2.0
-        return area
+            area += (points_rad[i]['lon'] - points_rad[j]['lon']) * (
+                2 + math.sin(points_rad[i]['lat']) + math.sin(points_rad[j]['lat'])
+            )
+
+        area = -area * R * R / 2.0
+        return abs(area)
