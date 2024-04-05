@@ -19,7 +19,7 @@ Additionally, data for producers, storage, and pipelines are provided in the sim
 The objective functions are defined as follows:
 
 ```math
-investFaktor * totalInvest + operatingFactor * operatingCosts + co2Faktor * totalCo2Emission
+investFactor * totalInvest + operatingFactor * operatingCosts + co2Factor * totalCo2Emission
 ```
 
 The sum of the factors can be assumed to be '1'.
@@ -59,27 +59,32 @@ Pipelines can only be drawn from and to points specified in the input files (str
 
 ## Output format
 
-
-The format of the output can be freely chosen but should retain the following contents.
+The format should follow the [output_example.json](output_example.json).
 
 Output the following information in a JSON file:
 - Total investment costs
 - Total operating costs
 - Total CO2 emissions
+- Total Demands
+- Total Loss
 
-For each generator, pipeline, and optionally storage, output the following information:
+For each Supplier, Pipeline, and optionally Storage, output the following information:
 - Total investment costs
 - Total operating costs
 - Total CO2 emissions
 
 For each area/building, output the following information:
-- Which generators, storage facilities were built on this area and in what quantity
-- For each generator, storage:
-  - how much energy was produced in each respective hour
-  - (optional storage) how much was loaded/unloaded into the storage and its current level.
+- Total Invest, Operating, CO2, Demand, Loss
+- Which Supplier, Storage facilities were built on this area and in what quantity
+- For each Supplier, Storage:
+  - Same output as for Total Suppliers, and Storages
+  - (optional storage) how much was loaded/unloaded into the storage and its current power level.
 
-For each pipeline, output the following information:
-- How much energy flows through each segment of the pipeline in each respective hour.
-- How much loss is incurred by the pipeline.
-
-Find a data structure that maps the network well as a graph.
+For each pipeline-network, output the following information:
+- Which nodes belong to the network
+- Total Invest, Operating, CO2
+- a key "connections" which is an array and contains an array with objects of 2 nodes and the length of the pipeline between them:
+  - a from Node
+  - a to Node
+  - a Usage (positive indicates the direction from->to, negative the opposite)
+  - Loss

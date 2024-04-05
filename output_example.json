@@ -1,0 +1,122 @@
+{
+  "total": {
+    "totalInvest": 0,
+    "operatingCost": 0,
+    "totalCo2": 0,
+    "fitnessValue": 0,
+    "demand": {
+        "Electro": [0, 0, 0, 0, 0, ...],
+        "Heating": [0, 0, 0, 0, 0, ...]
+    },
+    "loss": {
+        "Electro": [0, 0, 0, 0, 0, ...],
+        "Heating": [0, 0, 0, 0, 0, ...]
+    }
+  },
+  "supplier": {
+    "Photovoltaic": {
+      "totalInvest": 0,
+      "operatingCost": 0,
+      "totalCo2": 0,
+      "totalArea": 0
+    }
+  },
+  "storages": {
+    "ElectricityStorage": {
+      "totalInvest": 0,
+      "operatingCost": 0,
+      "totalCo2": 0,
+      "totalArea": 0
+    }
+  },
+  "buildings": {
+    "4d95005f-be67-429d-99e0-d66be46b37ec": {
+      "totalInvest": 0,
+      "operatingCost": 0,
+      "totalCo2": 0,
+      "totalArea": 0,
+      "supplier": {
+        "Photovoltaic": {
+          "totalInvest": 0,
+          "operatingCost": 0,
+          "totalCo2": 0,
+          "totalArea": 0,
+          "usage": [0, 0, 0, 0, 0, ...]
+        }
+      },
+      "storages": {
+        "ElectricityStorage": {
+          "totalInvest": 0,
+          "operatingCost": 0,
+          "totalCo2": 0,
+          "totalArea": 0,
+          "charging": [0, 0, 0, 0, 0, ...],
+          "discharging": [0, 0, 0, 0, 0, ...],
+          "load": [0, 0, 0, 0, 0, ...],
+        }
+      },
+      "demands" : {
+        "Electro" : [0, 0, 0, 0, 0, ...],
+        "Heating" : [0, 0, 0, 0, 0, ...],
+      }
+    }
+  },
+  "area": {
+    "bace10d3-92eb-4810-8200-a5eae70a1767": {
+      "totalInvest": 0,
+      "operatingCost": 0,
+      "totalCo2": 0,
+      "totalArea": 0,
+      "supplier": {
+        "Photovoltaic": {
+          "totalInvest": 0,
+          "operatingCost": 0,
+          "totalCo2": 0,
+          "totalArea": 0,
+          "usage": [0, 0, 0, 0, 0, ...]
+        }
+      },
+      "storages": {
+        "ElectricityStorage": {
+          "totalInvest": 0,
+          "operatingCost": 0,
+          "totalCo2": 0,
+          "totalArea": 0,
+          "charging": [0, 0, 0, 0, 0, ...],
+          "discharging": [0, 0, 0, 0, 0, ...],
+          "load": [0, 0, 0, 0, 0, ...],
+        }
+      }
+    }
+  },
+  "line": [
+    {
+      "kind": "PowerLine",
+        "totalInvest": 0,
+        "operatingCost": 0,
+        "totalCo2": 0,
+        "totalArea": 0,
+        "used_nodes": [
+          "4d95005f-be67-429d-99e0-d66be46b37ec",
+          "bace10d3-92eb-4810-8200-a5eae70a1767",
+          "c32643a7-c3ee-4461-bff7-b867769d2792"
+        ],
+        "connections": [
+          {
+            "from": "4d95005f-be67-429d-99e0-d66be46b37ec",
+            "to": "bace10d3-92eb-4810-8200-a5eae70a1767",
+            "capacity": 0,
+            "usage": [0, 0, 0, 0, 0, ...],
+            "loss": [0, 0, 0, 0, 0, ...]
+          },
+          {
+            "from": "bace10d3-92eb-4810-8200-a5eae70a1767",
+            "to": "c32643a7-c3ee-4461-bff7-b867769d2792",
+            "capacity": 0,
+            "usage": [0, 0, 0, 0, 0, ...],
+            "loss": [0, 0, 0, 0, 0, ...]
+          }
+        ]
+    }
+  ]
+}
