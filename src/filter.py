@@ -1,6 +1,7 @@
-from src.nodes.building import Building
-from src.nodes.area import Area
+from nodes.building import Building
+from nodes.area import Area
 import statistics
+
 
 def filter_data(buildings: list[Building], areas: list[Area], roads):
     all_lats = []

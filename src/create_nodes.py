@@ -1,10 +1,11 @@
 import json
 
-from src.nodes.area import Area
-from src.nodes.building import Building
-from src.filter import filter_data
+from nodes.area import Area
+from nodes.building import Building
+from filter import filter_data
 
-def create_graph(path = './data/total_Potsdam_with_energies.json'):
+
+def create_graph(path='./data/total_Potsdam_with_energies.json'):
     data = read_data(path)
 
     areas = create_areas(data['areas'])
@@ -27,6 +28,7 @@ def create_areas(data):
 
     return areas
 
+
 def create_buildings(data):
     buildings = []
 
@@ -40,6 +42,7 @@ def create_buildings(data):
         ))
 
     return buildings
+
 
 def read_data(path: str):
     # Read JSON string from file
