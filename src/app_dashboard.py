@@ -3,7 +3,8 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from objects import Shapes, Coordinate
-
+from create_nodes import create_graph
+from tools.build_road_network import build_road_network
 
 def generate_dict_shapes(used_entities, all_entities, color_map, open=False):
     valuesPerObject = {}
@@ -233,4 +234,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    #main()
+    road_network = build_road_network()
+    _, buildings = create_graph()
+    for building in buildings:
+        print(building.nearest_road(road_network))
