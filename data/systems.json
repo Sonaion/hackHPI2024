@@ -60,14 +60,11 @@
       "operatingCost": 0.00016,
       "co2": 0.0001,
       "input": {
-        "energy": "Electro (Transport)",
-        "costs": 0,
-        "co2": 0
+        "energy": "Electro (Transport)"
       },
       "output": {
         "energy": "Electro",
-        "factor": 0.98,
-        "co2": 0
+        "factor": 0.98
       },
       "canBeUsedBy": [
         "residential",
@@ -248,13 +245,10 @@
       "operatingCost": 0.43,
       "co2": 0.4,
       "input": {
-        "energy": "powerPlantPotential",
-        "costs": 0,
-        "co2": 0
+        "energy": "powerPlantPotential"
       },
       "output": {
         "energy": "Electro (Transport)",
-        "co2": 0,
         "factor": 1
       },
       "canBeUsedBy": [

@@ -8,13 +8,25 @@
 
 ---
 
-Im context of the energy transition, not only the industry and every household must rethink their energy concepts to reduce the CO2 footprint, but this also applies to cities and municipalities. A significant part of this transition is municipal heat planning and the use of renewable energies to meet demands.
+Im context of the energy transition, not only the industry and every household must rethink their energy concepts to
+reduce the CO2 footprint, but this also applies to cities and municipalities. A significant part of this transition is
+municipal heat planning and the use of renewable energies to meet demands.
 
-Currently, these planning processes are mostly done manually, presenting an opportunity for automation. The task at hand involves writing an algorithm that enables energy concept planning for a city, making assumptions that should allow implementation within 24 hours. One of these assumptions is that the given cities do not have existing facilities to source energy from, thus allowing for a complete redesign of the planning process from scratch.
+Currently, these planning processes are mostly done manually, presenting an opportunity for automation. The task at hand
+involves writing an algorithm that enables energy concept planning for a city, making assumptions that should allow
+implementation within 24 hours. One of these assumptions is that the given cities do not have existing facilities to
+source energy from, thus allowing for a complete redesign of the planning process from scratch.
 
-For this purpose, city data is provided, which has been extracted from OSM data via the Overpass API using a preprocessing script. This process can be applied to any city, as demonstrated in 01_CityDataPreprocessing.ipynb. These data include building data and usage information, street data, and data on the feasibility of renewable energies such as photovoltaics and solar thermal.
+For this purpose, city data is provided, which has been extracted from OSM data via the Overpass API using a
+preprocessing script. This process can be applied to any city, as demonstrated in 01_CityDataPreprocessing.ipynb. These
+data include building data and usage information, street data, and data on the feasibility of renewable energies such as
+photovoltaics and solar thermal.
 
-Additionally, data for producers, storage, and pipelines are provided in the simplest form. These data include investment costs, operating costs, and CO2 emissions. Ultimately, the program should develop an energy concept that calculates investment costs, operating costs, and CO2 emissions, optimizing based on given weights. These target values are then summed using these weights to calculate a fitness value, which determines the quality of the solution. The goal is to minimize this fitness value accordingly.
+Additionally, data for producers, storage, and pipelines are provided in the simplest form. These data include
+investment costs, operating costs, and CO2 emissions. Ultimately, the program should develop an energy concept that
+calculates investment costs, operating costs, and CO2 emissions, optimizing based on given weights. These target values
+are then summed using these weights to calculate a fitness value, which determines the quality of the solution. The goal
+is to minimize this fitness value accordingly.
 
 The objective functions are defined as follows:
 
@@ -24,18 +36,22 @@ investFactor * totalInvest + operatingFactor * operatingCosts + co2Factor * tota
 
 The sum of the factors can be assumed to be '1'.
 
-At the end, a network should emerge from the city data, which sizes the producers and pipelines and extrapolates their operating behavior based on the two given reference days to the entire year. The exact data structure and interfaces will be discussed in the following sections.
+At the end, a network should emerge from the city data, which sizes the producers and pipelines and extrapolates their
+operating behavior based on the two given reference days to the entire year. The exact data structure and interfaces
+will be discussed in the following sections.
 
 ## Assumptions Made / Given Parameters
 
 - There is a city with buildings containing specific usage data, street data, and area data for renewable energies.
 - There are generators, pipelines, and optionally, storage facilities.
 - Generators, pipelines, and storage facilities have investment costs, operating costs, and CO2 emissions.
-- Generators and storage facilities can only be built on the specified areas and have a power potential that is always referenced to the area in square meters.
+- Generators and storage facilities can only be built on the specified areas and have a power potential that is always
+  referenced to the area in square meters.
 - Pipelines can only be built on the streets and have a length in meters.
 - Buildings have energy demands specified per square meter and need to be extrapolated.
 - Energy demands are provided for a reference summer and winter day.
-- Energy potentials are specified in [potentials](data/loadprofiles/summer/potentials.json), indicating how much energy per square meter of a certain energy type can be utilized.
+- Energy potentials are specified in [potentials](data/loadprofiles/summer/potentials.json), indicating how much energy
+  per square meter of a certain energy type can be utilized.
 - There is a weighting that considers investment costs, maintenance costs, and CO2 emissions.
 - Only a limited number of generators, storage facilities can be provided per area, based on available space.
 - Energy networks can be built from vertices of areas/buildings to the nearest street point.
@@ -48,20 +64,42 @@ At the end, a network should emerge from the city data, which sizes the producer
 
 ## Task
 
-Write a program that accepts the input files of a city and creates an energy concept. The input files include city, generator, storage, pipeline, energy potential, and demand information. These are provided in the following files:
+Write a program that accepts the input files of a city and creates an energy concept. The input files include city,
+generator, storage, pipeline, energy potential, and demand information. These are provided in the following files:
 [Potsdam](data/total_Potsdam.json)
 [Systems](data/systems.json)
 [Reference Load Profiles](data/loadprofiles/summer)
 
-The program should generate an output file indicating, for each area, which generators and storage facilities were built there. It should also specify how much energy is produced per hour and which pipelines or demands they cover. At the end, key metrics should be provided, such as the total investment costs, operating costs, and CO2 emissions generated by the concept.
+The program should generate an output file indicating, for each area, which generators and storage facilities were built
+there. It should also specify how much energy is produced per hour and which pipelines or demands they cover. At the
+end, key metrics should be provided, such as the total investment costs, operating costs, and CO2 emissions generated by
+the concept. The quantity refers to the output and is calculated by {input in Kw}*{output.factor}
+
+The quantity of storages is based on their max capacity.
 
 Pipelines can only be drawn from and to points specified in the input files (streets or corners of buildings).
+
+## Disclaimer
+
+The potentials show how much energy can be generated per square meter of a certain type.
+The actual energy generation is limited by the available space in the area and the choosen Supplier.
+
+!!! Photovoltaics and Solarthermal can use the hole energy potential per square meter for one module.
+
+Suppliers are limited by the quantity. A Supplier which can output 1kW is one quantity. If we need to
+produce 2kW, we need to build 2 Suppliers. which means we need to pay the invest cost twice. All Units are given in
+kW. all Demands in [summer](data%2Floadprofiles%2Fsummer), [winter](data%2Floadprofiles%2Fwinter) are given in kW/m^2.
+
+The operatingCost and co2 are values that need to be paid for each use of an entity.
+
+Photovoltaics and Solarthermal have are not limited by their output, but bei their area.
 
 ## Output format
 
 The format should follow the [output_example.json](output_example.json).
 
 Output the following information in a JSON file:
+
 - Total investment costs
 - Total operating costs
 - Total CO2 emissions
@@ -69,22 +107,26 @@ Output the following information in a JSON file:
 - Total Loss
 
 For each Supplier, Pipeline, and optionally Storage, output the following information:
+
 - Total investment costs
 - Total operating costs
 - Total CO2 emissions
 
 For each area/building, output the following information:
+
 - Total Invest, Operating, CO2, Demand, Loss
 - Which Supplier, Storage facilities were built on this area and in what quantity
 - For each Supplier, Storage:
-  - Same output as for Total Suppliers, and Storages
-  - (optional storage) how much was loaded/unloaded into the storage and its current power level.
+    - Same output as for Total Suppliers, and Storages
+    - (optional storage) how much was loaded/unloaded into the storage and its current power level.
 
 For each pipeline-network, output the following information:
+
 - Which nodes belong to the network
 - Total Invest, Operating, CO2
-- a key "connections" which is an array and contains an array with objects of 2 nodes and the length of the pipeline between them:
-  - a from Node
-  - a to Node
-  - a Usage (positive indicates the direction from->to, negative the opposite)
-  - Loss
+- a key "connections" which is an array and contains an array with objects of 2 nodes and the length of the pipeline
+  between them:
+    - a from Node
+    - a to Node
+    - a Usage (positive indicates the direction from->to, negative the opposite)
+    - Loss
