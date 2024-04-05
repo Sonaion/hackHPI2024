@@ -214,6 +214,30 @@
         "farm"
       ]
     },
+    "HeatingToTransport": {
+      "name": "HeatingToTransport",
+      "invest": 0,
+      "area": 0,
+      "operatingCost": 0,
+      "co2": 0,
+      "input": {
+        "energy": "Heating"
+      },
+      "output": {
+        "energy": "Heating (Transport)",
+        "factor": 1
+      },
+      "canBeUsedBy": [
+        "residential",
+        "industrial",
+        "commercial",
+        "high_density_residential",
+        "construction",
+        "retail",
+        "transport",
+        "farm"
+      ]
+    },
     "OilBoiler": {
       "name": "OilBoiler",
       "area": 0,
