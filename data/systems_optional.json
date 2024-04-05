@@ -1,0 +1,316 @@
+{
+  "supplier": {
+    "Photovoltaics": {
+      "name": "Photovoltaics",
+      "area": 1,
+      "invest": 800,
+      "operatingCost": 0,
+      "co2": 0,
+      "input": {
+        "energy": "pv_potential"
+      },
+      "output": {
+        "energy": "Electro (Transport)",
+        "factor": 0.15
+      },
+      "canBeUsedBy": [
+        "free_field"
+      ]
+    },
+    "SolarThermal": {
+      "name": "SolarThermal",
+      "area": 1,
+      "invest": 250,
+      "operatingCost": 0,
+      "co2": 0,
+      "input": {
+        "energy": "pv_potential"
+      },
+      "output": {
+        "energy": "DistrictHeating (Transport)",
+        "factor": 0.5
+      },
+      "canBeUsedBy": [
+        "free_field"
+      ]
+    },
+    "Transformer": {
+      "name": "Transformer",
+      "area": 0,
+      "invest": 715,
+      "operatingCost": 0,
+      "co2": 0,
+      "input": {
+        "energy": "Electro (Transport)"
+      },
+      "output": {
+        "energy": "Electro"
+      },
+      "canBeUsedBy": [
+        "commercial",
+        "industrial",
+        "construction",
+        "farm"
+      ]
+    },
+    "HouseConnection": {
+      "name": "HouseConnection",
+      "area": 0,
+      "invest": 72,
+      "operatingCost": 0,
+      "co2": 0,
+      "input": {
+        "energy": "Electro (Transport)"
+      },
+      "output": {
+        "energy": "Electro",
+        "factor": 0.98
+      },
+      "canBeUsedBy": [
+        "residential",
+        "commercial",
+        "high_density_residential",
+        "construction",
+        "retail",
+        "transport",
+        "farm"
+      ]
+    },
+    "Heatpump AirWater (small)": {
+      "name": "Heatpump AirWater (small)",
+      "min": 0,
+      "area": 0,
+      "invest": 1400,
+      "operatingCost": 0,
+      "co2": 0,
+      "input": {
+        "energy": "Electro (Transport)"
+      },
+      "output": {
+        "energy": "Heating",
+        "factor": 3.0
+      },
+      "canBeUsedBy": [
+        "residential",
+        "industrial",
+        "commercial",
+        "high_density_residential",
+        "construction",
+        "retail",
+        "transport",
+        "farm"
+      ]
+    },
+    "Heatpump AirWater (medium)": {
+      "name": "Heatpump AirWater (medium)",
+      "min": 100,
+      "invest": 700,
+      "area": 0,
+      "operatingCost": 0,
+      "co2": 0,
+      "input": {
+        "energy": "Electro (Transport)"
+      },
+      "output": {
+        "energy": "Heating",
+        "factor": 3.0
+      },
+      "canBeUsedBy": [
+        "residential",
+        "industrial",
+        "commercial",
+        "high_density_residential",
+        "construction",
+        "retail",
+        "transport",
+        "farm"
+      ]
+    },
+    "Heatpump AirWater (big)": {
+      "name": "Heatpump AirWater (big)",
+      "min": 1500,
+      "invest": 450,
+      "area": 0,
+      "operatingCost": 0,
+      "co2": 0,
+      "input": {
+        "energy": "Electro (Transport)"
+      },
+      "output": {
+        "energy": "Heating",
+        "factor": 3.0
+      },
+      "canBeUsedBy": [
+        "residential",
+        "industrial",
+        "commercial",
+        "high_density_residential",
+        "construction",
+        "retail",
+        "transport",
+        "farm"
+      ]
+    },
+    "HeatingElement": {
+      "name": "HeatingElement",
+      "invest": 150,
+      "area": 0,
+      "operatingCost": 0,
+      "co2": 0,
+      "input": {
+        "energy": "Electro"
+      },
+      "output": {
+        "energy": "Heating",
+        "factor": 1
+      },
+      "canBeUsedBy": [
+        "residential",
+        "commercial",
+        "high_density_residential",
+        "construction",
+        "retail",
+        "transport",
+        "farm"
+      ]
+    },
+    "DistrictHeatingCreator": {
+      "name": "DistrictHeatingCreator",
+      "invest": 200,
+      "area": 0,
+      "operatingCost": 0,
+      "co2": 0,
+      "input": {
+        "energy": "districtHeatingPotential"
+      },
+      "output": {
+        "energy": "DistrictHeating (Transport)",
+        "factor": 1
+      },
+      "canBeUsedBy": [
+        "industrial"
+      ]
+    },
+    "DistrictHeatingConnection": {
+      "name": "DistrictHeatingConnection",
+      "invest": 15,
+      "area": 0,
+      "operatingCost": 0,
+      "co2": 0,
+      "input": {
+        "energy": "DistrictHeating (Transport)"
+      },
+      "output": {
+        "energy": "Heating",
+        "factor": 1
+      },
+      "canBeUsedBy": [
+        "residential",
+        "commercial",
+        "high_density_residential",
+        "construction",
+        "retail",
+        "transport",
+        "farm"
+      ]
+    },
+    "OilBoiler": {
+      "name": "OilBoiler",
+      "area": 0,
+      "invest": 0,
+      "operatingCost": 0.14,
+      "co2": 0.3,
+      "input": {
+        "energy": "heatingOil"
+      },
+      "output": {
+        "energy": "Heating",
+        "factor": 1
+      },
+      "canBeUsedBy": [
+        "residential",
+        "industrial",
+        "commercial",
+        "high_density_residential",
+        "construction",
+        "retail",
+        "transport",
+        "farm"
+      ]
+    },
+    "ElectricPowerPlant": {
+      "name": "ElectricPowerPlant",
+      "invest": 0,
+      "area": 0,
+      "operatingCost": 0.43,
+      "co2": 0.4,
+      "input": {
+        "energy": "powerPlantPotential"
+      },
+      "output": {
+        "energy": "Electro (Transport)",
+        "factor": 1
+      },
+      "canBeUsedBy": [
+        "free_field"
+      ]
+    }
+  },
+  "storages": {
+    "ElectricityStorage": {
+      "name": "ElectricityStorage",
+      "lossPerHour": 0.001,
+      "invest": 800,
+      "operatingCost": 0.8,
+      "co2": 0.05,
+      "energy": "Electro (Transport)"
+    },
+    "HeatStorage": {
+      "name": "HeatStorage",
+      "lossPerHour": 0.01,
+      "invest": 100,
+      "operatingCost": 0.1,
+      "co2": 0.001,
+      "energy": "Heating"
+    }
+  },
+  "line": {
+    "PowerLine": {
+      "name": "PowerLine",
+      "lossPerM": 0,
+      "investPerM": 0,
+      "operatingCost": 0,
+      "co2": 0,
+      "min": null,
+      "max": null,
+      "energy": "Electro (Transport)"
+    },
+    "DistrictHeatingLine (small)": {
+      "name": "DistrictHeatingLine (small)",
+      "lossPerM": 0.001,
+      "investPerM": 445,
+      "operatingCost": 0.01,
+      "co2": 0,
+      "max": 55,
+      "energy": "DistrictHeating (Transport)"
+    },
+    "DistrictHeatingLine (medium)": {
+      "name": "DistrictHeatingLine (medium)",
+      "lossPerM": 0.00095,
+      "investPerM": 555,
+      "operatingCost": 0.01,
+      "co2": 0,
+      "max": 900,
+      "energy": "DistrictHeating (Transport)"
+    },
+    "DistrictHeatingLine (big)": {
+      "name": "DistrictHeatingLine (big)",
+      "lossPerM": 0.0009,
+      "investPerM": 765,
+      "operatingCost": 0.01,
+      "co2": 0,
+      "max": null,
+      "energy": "DistrictHeating (Transport)"
+    }
+  }
+}
