@@ -33,13 +33,30 @@ type NodeDistance struct {
 type BuildingMap map[string]Building
 
 type Building struct {
-	ID       string  `json:"id"`
-	Type     string  `json:"type"`
-	Geometry []Point `json:"geometry"`
-	Open     bool    `json:"open"`
-	BaseArea float64 `json:"base_area"`
-	Levels   float64 `json:"levels"`
-	Area     float64 `json:"area"`
+	ID                string      `json:"id"`
+	Type              string      `json:"type"`
+	Geometry          []Point     `json:"geometry"`
+	Open              bool        `json:"open"`
+	BaseArea          float64     `json:"base_area"`
+	Levels            float64     `json:"levels"`
+	Area              float64     `json:"area"`
+	WinterConsumption Consumption `json:"winter"`
+	SummerConsumption Consumption `json:"summer"`
+}
+
+type Consumption struct {
+	Electro []float64 `json:"Electro"`
+	Heating []float64 `json:"Heating"`
+}
+
+type CalcedConsumption struct {
+	minElectro  float64     `json:"min_electro"`
+	maxElectro  float64     `json:"max_electro"`
+	avgElectro  float64     `json:"avg_electro"`
+	minHeating  float64     `json:"min_heating"`
+	maxHeating  float64     `json:"max_heating"`
+	avgHeating  float64     `json:"avg_heating"`
+	Consumption Consumption `json:"consumption"`
 }
 
 type AreaMap map[string]Area
@@ -57,11 +74,13 @@ type OutputRoad struct {
 }
 
 type OutputBuilding struct {
-	ID       int     `json:"id"`
-	Point    Point   `json:"center"`
-	Type     string  `json:"type"`
-	BaseArea float64 `json:"base_area"`
-	Area     float64 `json:"area"`
+	ID                int               `json:"id"`
+	Point             Point             `json:"center"`
+	Type              string            `json:"type"`
+	BaseArea          float64           `json:"base_area"`
+	Area              float64           `json:"area"`
+	WinterConsumption CalcedConsumption `json:"winter_consumption"`
+	SummerConsumption CalcedConsumption `json:"summer_consumption"`
 }
 
 type OutputArea struct {
@@ -190,6 +209,70 @@ func main() {
 			continue
 		}
 
+		minElectroSummer := math.Inf(1)
+		maxElectroSummer := 0.0
+		avgElectroSummer := 0.0
+
+		minHeatingSummer := math.Inf(1)
+		maxHeatingSummer := 0.0
+		avgHeatingSummer := 0.0
+
+		for _, consumption := range building.SummerConsumption.Electro {
+			if consumption < minElectroSummer {
+				minElectroSummer = consumption
+			}
+			if consumption > maxElectroSummer {
+				maxElectroSummer = consumption
+			}
+			avgElectroSummer += consumption
+		}
+
+		avgElectroSummer /= float64(len(building.SummerConsumption.Electro))
+
+		for _, consumption := range building.SummerConsumption.Heating {
+			if consumption < minHeatingSummer {
+				minHeatingSummer = consumption
+			}
+			if consumption > maxHeatingSummer {
+				maxHeatingSummer = consumption
+			}
+			avgHeatingSummer += consumption
+		}
+
+		avgHeatingSummer /= float64(len(building.SummerConsumption.Heating))
+
+		minElectroWinter := math.Inf(1)
+		maxElectroWinter := 0.0
+		avgElectroWinter := 0.0
+
+		minHeatingWinter := math.Inf(1)
+		maxHeatingWinter := 0.0
+		avgHeatingWinter := 0.0
+
+		for _, consumption := range building.WinterConsumption.Electro {
+			if consumption < minElectroWinter {
+				minElectroWinter = consumption
+			}
+			if consumption > maxElectroWinter {
+				maxElectroWinter = consumption
+			}
+			avgElectroWinter += consumption
+		}
+
+		avgElectroWinter /= float64(len(building.WinterConsumption.Electro))
+
+		for _, consumption := range building.WinterConsumption.Heating {
+			if consumption < minHeatingWinter {
+				minHeatingWinter = consumption
+			}
+			if consumption > maxHeatingWinter {
+				maxHeatingWinter = consumption
+			}
+			avgHeatingWinter += consumption
+		}
+
+		avgHeatingWinter /= float64(len(building.WinterConsumption.Heating))
+
 		filteredBuildings[key] = building
 		outputBuildings = append(outputBuildings, OutputBuilding{
 			ID:       len(outputBuildings),
@@ -197,6 +280,24 @@ func main() {
 			Type:     building.Type,
 			BaseArea: building.BaseArea,
 			Area:     building.Area,
+			WinterConsumption: CalcedConsumption{
+				minElectro:  minElectroWinter,
+				maxElectro:  maxElectroWinter,
+				avgElectro:  avgElectroWinter,
+				minHeating:  minHeatingWinter,
+				maxHeating:  maxHeatingWinter,
+				avgHeating:  avgHeatingWinter,
+				Consumption: building.WinterConsumption,
+			},
+			SummerConsumption: CalcedConsumption{
+				minElectro:  minElectroSummer,
+				maxElectro:  maxElectroSummer,
+				avgElectro:  avgElectroSummer,
+				minHeating:  minHeatingSummer,
+				maxHeating:  maxHeatingSummer,
+				avgHeating:  avgHeatingSummer,
+				Consumption: building.SummerConsumption,
+			},
 		})
 	}
 
