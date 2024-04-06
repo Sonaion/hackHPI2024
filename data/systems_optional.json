@@ -2,6 +2,7 @@
   "supplier": {
     "Photovoltaics": {
       "name": "Photovoltaics",
+      "color": "#0028ff",
       "area": 1,
       "invest": 800,
       "operatingCost": 0,
@@ -19,6 +20,7 @@
     },
     "SolarThermal": {
       "name": "SolarThermal",
+      "color": "#d700ff",
       "area": 1,
       "invest": 250,
       "operatingCost": 0,
@@ -36,6 +38,7 @@
     },
     "Transformer": {
       "name": "Transformer",
+      "color": "#595959",
       "area": 0,
       "invest": 715,
       "operatingCost": 0,
@@ -55,6 +58,7 @@
     },
     "HouseConnection": {
       "name": "HouseConnection",
+      "color": "#828281",
       "area": 0,
       "invest": 72,
       "operatingCost": 0,
@@ -78,6 +82,7 @@
     },
     "Heatpump AirWater (small)": {
       "name": "Heatpump AirWater (small)",
+      "color": "#00ff0d",
       "min": 0,
       "area": 0,
       "invest": 1400,
@@ -103,6 +108,7 @@
     },
     "Heatpump AirWater (medium)": {
       "name": "Heatpump AirWater (medium)",
+      "color": "#00ff0d",
       "min": 100,
       "invest": 700,
       "area": 0,
@@ -128,6 +134,7 @@
     },
     "Heatpump AirWater (big)": {
       "name": "Heatpump AirWater (big)",
+      "color": "#00ff0d",
       "min": 1500,
       "invest": 450,
       "area": 0,
@@ -153,6 +160,7 @@
     },
     "HeatingElement": {
       "name": "HeatingElement",
+      "color": "#ff6f00",
       "invest": 150,
       "area": 0,
       "operatingCost": 0,
@@ -176,6 +184,7 @@
     },
     "DistrictHeatingCreator": {
       "name": "DistrictHeatingCreator",
+      "color": "#ff2a00",
       "invest": 200,
       "area": 0,
       "operatingCost": 0,
@@ -193,6 +202,7 @@
     },
     "DistrictHeatingConnection": {
       "name": "DistrictHeatingConnection",
+      "color": "#ff2a00",
       "invest": 15,
       "area": 0,
       "operatingCost": 0,
@@ -216,6 +226,7 @@
     },
     "HeatingToTransport": {
       "name": "HeatingToTransport",
+      "color": "#ff00fb",
       "invest": 0,
       "area": 0,
       "operatingCost": 0,
@@ -240,6 +251,7 @@
     },
     "OilBoiler": {
       "name": "OilBoiler",
+      "color": "#ff0000",
       "area": 0,
       "invest": 0,
       "operatingCost": 0.14,
@@ -264,6 +276,7 @@
     },
     "ElectricPowerPlant": {
       "name": "ElectricPowerPlant",
+      "color": "#ffff00",
       "invest": 0,
       "area": 0,
       "operatingCost": 0.43,
@@ -283,6 +296,7 @@
   "storages": {
     "ElectricityStorage": {
       "name": "ElectricityStorage",
+      "color": "#fffb00",
       "lossPerHour": 0.001,
       "invest": 800,
       "operatingCost": 0.8,
@@ -291,6 +305,7 @@
     },
     "HeatStorage": {
       "name": "HeatStorage",
+      "color": "#ff0000",
       "lossPerHour": 0.01,
       "invest": 100,
       "operatingCost": 0.1,
@@ -301,6 +316,7 @@
   "line": {
     "PowerLine": {
       "name": "PowerLine",
+      "color": "#00eeff",
       "lossPerM": 0,
       "investPerM": 0,
       "operatingCost": 0,
@@ -311,6 +327,7 @@
     },
     "DistrictHeatingLine (small)": {
       "name": "DistrictHeatingLine (small)",
+      "color": "#48ff00",
       "lossPerM": 0.001,
       "investPerM": 445,
       "operatingCost": 0.01,
@@ -320,6 +337,7 @@
     },
     "DistrictHeatingLine (medium)": {
       "name": "DistrictHeatingLine (medium)",
+      "color": "#ff9d00",
       "lossPerM": 0.00095,
       "investPerM": 555,
       "operatingCost": 0.01,
@@ -329,6 +347,7 @@
     },
     "DistrictHeatingLine (big)": {
       "name": "DistrictHeatingLine (big)",
+      "color": "#ff0000",
       "lossPerM": 0.0009,
       "investPerM": 765,
       "operatingCost": 0.01,

@@ -5,12 +5,12 @@
     "totalCo2": 0,
     "fitnessValue": 0,
     "demand": {
-        "Electro": [0, 0, 0, 0, 0, ...],
-        "Heating": [0, 0, 0, 0, 0, ...]
+        "Electro": [],
+        "Heating": []
     },
     "loss": {
-        "Electro": [0, 0, 0, 0, 0, ...],
-        "Heating": [0, 0, 0, 0, 0, ...]
+        "Electro": [],
+        "Heating": []
     }
   },
   "supplier": {
@@ -41,7 +41,7 @@
           "operatingCost": 0,
           "totalCo2": 0,
           "totalArea": 0,
-          "usage": [0, 0, 0, 0, 0, ...]
+          "usage": []
         }
       },
       "storages": {
@@ -50,14 +50,14 @@
           "operatingCost": 0,
           "totalCo2": 0,
           "totalArea": 0,
-          "charging": [0, 0, 0, 0, 0, ...],
-          "discharging": [0, 0, 0, 0, 0, ...],
-          "load": [0, 0, 0, 0, 0, ...]
+          "charging": [],
+          "discharging": [],
+          "load": []
         }
       },
       "demands" : {
-        "Electro" : [0, 0, 0, 0, 0, ...],
-        "Heating" : [0, 0, 0, 0, 0, ...]
+        "Electro" : [],
+        "Heating" : []
       }
     }
   },
@@ -73,7 +73,7 @@
           "operatingCost": 0,
           "totalCo2": 0,
           "totalArea": 0,
-          "usage": [0, 0, 0, 0, 0, ...]
+          "usage": []
         }
       },
       "storages": {
@@ -82,9 +82,9 @@
           "operatingCost": 0,
           "totalCo2": 0,
           "totalArea": 0,
-          "charging": [0, 0, 0, 0, 0, ...],
-          "discharging": [0, 0, 0, 0, 0, ...],
-          "load": [0, 0, 0, 0, 0, ...]
+          "charging": [],
+          "discharging": [],
+          "load": []
         }
       }
     }
@@ -106,15 +106,15 @@
             "from": "lat<0.0001>lon<12.003>",
             "to": "lat<0.0002>lon<12.003>",
             "capacity": 0,
-            "usage": [0, 0, 0, 0, 0, ...],
-            "loss": [0, 0, 0, 0, 0, ...]
+            "usage": [],
+            "loss": []
           },
           {
             "from": "lat<0.0002>lon<12.003>",
             "to": "lat<0.0003>lon<12.003>",
             "capacity": 0,
-            "usage": [0, 0, 0, 0, 0, ...],
-            "loss": [0, 0, 0, 0, 0, ...]
+            "usage": [],
+            "loss": []
           }
         ]
     }

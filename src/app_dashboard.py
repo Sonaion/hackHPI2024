@@ -2,6 +2,7 @@ import json
 import plotly.graph_objects as go
 import streamlit as st
 
+import re
 from objects import Shapes, Coordinate
 
 
@@ -82,7 +83,34 @@ def render_main(map_style, used_areas, used_highways, used_buildings):
             hoverinfo="skip"
         ))
 
+    if "pipeRender" in st.session_state:
+        for pipe, values in st.session_state.pipeRender.items():
+            if len(values["lon"]) == 0:
+                continue
 
+            fig.add_trace(go.Scattermapbox(
+                mode="lines",
+                lon=values["lon"],
+                lat=values["lat"],
+                marker={"color": values["color"]},
+                name=pipe,
+                line=dict(width=2, color=values["color"]),
+                hovertext=[json.dumps(val) for val in values["hover"]],
+            ))
+
+    if "supplierRenders" in st.session_state:
+        for supplier, values in st.session_state.supplierRenders.items():
+            if len(values["lat"]) == 0:
+                continue
+
+            fig.add_trace(go.Scattermapbox(
+                mode="markers",
+                lon=values["lon"],
+                lat=values["lat"],
+                marker={"color": values["color"]},
+                name=supplier,
+                hovertext=values["hoverText"],
+            ))
 
     fig.update_layout(
         mapbox=dict(
@@ -91,11 +119,10 @@ def render_main(map_style, used_areas, used_highways, used_buildings):
                 lat=st.session_state.centroid.lat,
                 lon=st.session_state.centroid.lon
             ),
-            zoom=10
+            zoom=15
         ),
         height=st.session_state.map_height
     )
-
 
     st.plotly_chart(fig, use_container_width=True)
 
@@ -116,6 +143,158 @@ def upload_callback():
     reset_store()
 
 
+def load_solution(file):
+    if "result_set" in st.session_state:
+        return
+
+    st.session_state.result_set = True
+    pattern = re.compile(r"lat<([+-]?[0-9]*[.]?[0-9]+)>lon<([+-]?[0-9]*[.]?[0-9]+)>")
+    solution = file
+    system_file = "./../data/systems_optional.json"
+    with open(system_file, "r") as file:
+        systems = json.load(file)
+
+    suppliers_options = systems["supplier"]
+    pipe_options = systems["line"]
+
+    buildings = solution["buildings"]
+    areas = solution["areas"]
+    pipes = solution["line"]
+
+    line_types = set()
+    for pipe in pipes:
+        line_types.add(pipe["kind"])
+
+    pipeRender = {}
+
+    for line_type in line_types:
+        lineCoordinatesLon = []
+        lineCoordinatesLat = []
+        pipe_option = pipe_options[line_type]
+        line_color = pipe_option["color"]
+        hover = []
+        for pipe in pipes:
+            if pipe["kind"] != line_type:
+                continue
+
+            for connection in pipe["connections"]:
+                val = {
+                    "capacity": connection["capacity"],
+                    "usage": sum(connection["usage"]),
+                    "loss": sum(connection["loss"]),
+                    "invest": pipe["totalInvest"],
+                    "operating": pipe["operatingCost"],
+                    "co2": pipe["totalCo2"]
+                }
+
+                from_coord = connection["from"]
+                to_coord = connection["to"]
+                matched = pattern.match(from_coord)
+                lat = float(matched.group(1))
+                lon = float(matched.group(2))
+                lineCoordinatesLat.append(lat)
+                lineCoordinatesLon.append(lon)
+                hover.append(val)
+
+                matched = pattern.match(to_coord)
+                lat = float(matched.group(1))
+                lon = float(matched.group(2))
+                lineCoordinatesLat.append(lat)
+                lineCoordinatesLon.append(lon)
+                hover.append(val)
+
+            if len(lineCoordinatesLat) == 0:
+                continue
+
+            pipeRender[line_type] = {
+                "lon": lineCoordinatesLon,
+                "lat": lineCoordinatesLat,
+                "color": line_color,
+                "hover": hover
+            }
+
+    original_input = st.session_state.in_file
+    buildings = solution["buildings"]
+    buildingSupplierRender = {}
+    supplierTypes = set()
+    orgBuildings = original_input["buildings"]
+
+    supplierRenders = {}
+    for idx, supplierType in enumerate(suppliers_options):
+        offset_percentage = idx / len(suppliers_options)
+        coordinateLat = []
+        coordinateLon = []
+        hoverText = []
+        for buildingId, building in buildings.items():
+            suppliers = building["supplier"]
+            if supplierType not in suppliers:
+                continue
+
+            orgBuilding = orgBuildings[buildingId]
+            geometry = orgBuilding["geometry"]
+            most_north_east = geometry[0]
+            next_coordinate = geometry[1]
+            for idx, coordinate in enumerate(geometry):
+                if coordinate["lat"] > most_north_east["lat"] and coordinate["lon"] > most_north_east["lon"]:
+                    most_north_east = coordinate
+                    next_coordinate = geometry[(idx + 1) % len(geometry)]
+
+
+            lat_a = most_north_east["lat"]
+            lon_a = most_north_east["lon"]
+
+            lat_b = next_coordinate["lat"]
+            lon_b = next_coordinate["lon"]
+
+            lat_center = (1-offset_percentage) * lat_a + offset_percentage * lat_b
+            lon_center = (1-offset_percentage) * lon_a + offset_percentage * lon_b
+
+            coordinateLat.append(lat_center)
+            coordinateLon.append(lon_center)
+            hoverText.append(supplierType)
+
+        for areaId, area in areas.items():
+            suppliers = area["supplier"]
+            if supplierType not in suppliers:
+                continue
+
+            orgArea = original_input["areas"][areaId]
+            geometry = orgArea["geometry"]
+            most_north_east = geometry[0]
+            next_coordinate = geometry[1]
+            for idx, coordinate in enumerate(geometry):
+                if coordinate["lat"] > most_north_east["lat"] and coordinate["lon"] > most_north_east["lon"]:
+                    most_north_east = coordinate
+                    next_coordinate = geometry[(idx + 1) % len(geometry)]
+
+            lat_a = most_north_east["lat"]
+            lon_a = most_north_east["lon"]
+
+            lat_b = next_coordinate["lat"]
+            lon_b = next_coordinate["lon"]
+
+            lat_center = (1 - offset_percentage) * lat_a + offset_percentage * lat_b
+            lon_center = (1 - offset_percentage) * lon_a + offset_percentage * lon_b
+
+            coordinateLat.append(lat_center)
+            coordinateLon.append(lon_center)
+            hoverText.append(supplierType)
+
+        if len(coordinateLat) == 0:
+            continue
+
+        color = suppliers_options[supplierType]["color"]
+        supplierRenders[supplierType] = {
+            "lat": coordinateLat,
+            "lon": coordinateLon,
+            "color": color,
+            "hoverText": hoverText,
+        }
+
+    st.session_state.supplierRenders = supplierRenders
+    st.session_state.pipeRender = pipeRender
+
+
 def main():
     # render in wide mode
     st.set_page_config(layout="wide")
@@ -127,8 +306,16 @@ def main():
         reset_store()
 
     input_file = st.sidebar.file_uploader("Upload File", on_change=upload_callback)
-    default_file_path = "./data/total_Potsdam.json"
+    default_file_path = "../data/total_Arnis.json"
     default_file = json.load(open(default_file_path, "r"))
+    st.session_state.in_file = default_file
+
+    result_file = st.sidebar.file_uploader("Upload Solution")
+    if not result_file:
+        result_file = "../data/output/arnis_random.json"
+        result_file = json.load(open(result_file, "r"))
+    if result_file:
+        load_solution(result_file)
 
     # Define a Store
     if "init" not in st.session_state:
@@ -191,7 +378,7 @@ def main():
         buildingColorMapping = {}
         for idx, building in enumerate(buildings):
             # set a gradient but dont use greens
-            buildingColorMapping[building] = f"hsl({((idx * 180 // len(buildings))+180) % 360}, 100%, 50%)"
+            buildingColorMapping[building] = f"hsl({((idx * 180 // len(buildings)) + 180) % 360}, 100%, 50%)"
 
         highwayColorMapping = {}
         for idx, highway in enumerate(highways):
