@@ -48,7 +48,6 @@ type Area struct {
 	Geometry []Point `json:"geometry"`
 	Open     bool    `json:"open"`
 	BaseArea float64 `json:"base_area"`
-	Area     float64 `json:"area"`
 }
 
 type OutputRoad struct {
@@ -173,7 +172,6 @@ func main() {
 			ID:       len(outputBuildings) + len(outputAreas),
 			Point:    central,
 			BaseArea: area.BaseArea,
-			Area:     area.Area,
 		})
 	}
 
@@ -214,18 +212,21 @@ func main() {
 		highways = append(highways, highway)
 	}
 
-	for i, highway := range highways {
-		index := len(outputBuildings) + len(outputAreas) + i
+	totalVisited := 0
+	for _, highway := range highways {
 		var prev Point
 		for j, p := range highway.Geometry {
+			index := len(outputBuildings) + len(outputAreas) + totalVisited + j
 			if j > 0 {
 				dist := distance(prev, p)
-				outputNodes[index].Children = append(outputNodes[index].Children, NodeDistance{Node: index + j, Distance: dist})
-				outputNodes[index+j].Children = append(outputNodes[index+j].Children, NodeDistance{Node: index, Distance: dist})
+				outputNodes[index-1].Children = append(outputNodes[index-1].Children, NodeDistance{Node: index, Distance: dist})
+				outputNodes[index].Children = append(outputNodes[index].Children, NodeDistance{Node: index - 1, Distance: dist})
 			}
 
 			prev = p
 		}
+
+		totalVisited += len(highway.Geometry)
 	}
 
 	roadPoints := []Point{}
