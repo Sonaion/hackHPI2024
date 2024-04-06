@@ -13,10 +13,8 @@ def create_graph(path='./data/total_Potsdam_with_energies.json'):
     areas = create_areas(data['areas'])
     buildings = create_buildings(data['buildings'])
 
-    print(len(buildings))
     buildings, areas, _ = filter_data(buildings, areas, [])
 
-    print(len(buildings))
     building_roads = {}
     for building in buildings:
         building_roads[building.id] = building.nearest_road(network)

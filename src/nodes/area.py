@@ -21,13 +21,13 @@ class Area:
             'lon': avg_lon
         }
 
-    def calculate_area(points):
+    def calculate_area(self):
         # Earth's radius in meters
         R = 6378137
         area = 0.0
 
         # Convert all coordinates from degrees to radians
-        points_rad = [{'lat': math.radians(p['lat']), 'lon': math.radians(p['lon'])} for p in points]
+        points_rad = [{'lat': math.radians(p['lat']), 'lon': math.radians(p['lon'])} for p in self.points]
 
         n = len(points_rad)
         for i in range(n):

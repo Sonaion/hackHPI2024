@@ -51,7 +51,7 @@ class Building:
 
         # return nearest_point[0]
 
-        for point_id, _ in road_network.items():
-            dist = calc_dist_meter(self.avg_point, get_point_cords(point_id, road_network))
-            if nearest_point[0] is None or dist < nearest_point[1]:
-                nearest_point = (point_id, dist)
+        # for point_id, _ in road_network.items():
+            # dist = calc_dist_meter([float(self.avg_point['lat']), float(self.avg_point['lon'])], [float(x) for x in get_point_cords(point_id, road_network)])
+            # if nearest_point[0] is None or dist < nearest_point[1]:
+                # nearest_point = (point_id, dist)
