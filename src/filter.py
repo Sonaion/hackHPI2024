@@ -9,7 +9,7 @@ def filter_data(buildings: list[Building], areas: list[Area], roads):
     for building in buildings:
         for point in building.points:
             all_lats.append(point['lat'])
-            all_lons.append(point['lat'])
+            all_lons.append(point['lon'])
 
     median_lat = statistics.median(all_lats)
     median_lon = statistics.median(all_lons)

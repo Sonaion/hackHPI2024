@@ -3,17 +3,25 @@ import json
 from nodes.area import Area
 from nodes.building import Building
 from filter import filter_data
+from tools.build_road_network import build_road_network2
 
 
 def create_graph(path='./data/total_Potsdam_with_energies.json'):
+    network, road_points = build_road_network2()
     data = read_data(path)
 
     areas = create_areas(data['areas'])
     buildings = create_buildings(data['buildings'])
 
-    data = filter_data(buildings, areas, roads=[])
+    print(len(buildings))
+    buildings, areas, _ = filter_data(buildings, areas, [])
 
-    return areas, buildings
+    print(len(buildings))
+    building_roads = {}
+    for building in buildings:
+        building_roads[building.id] = building.nearest_road(network)
+
+    return areas, buildings, building_roads, network
 
 
 def create_areas(data):

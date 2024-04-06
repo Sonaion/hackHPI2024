@@ -1,5 +1,5 @@
 from nodes.consumption import Consumption
-from tools.build_road_network import calc_distance, get_point_cords
+from tools.build_road_network import calc_dist_meter, get_point_cords
 
 
 class Building:
@@ -35,13 +35,22 @@ class Building:
 
     def nearest_road(self, road_network):
         nearest_point = (None, None)
-        for point_id, _ in road_network.items():
-            if nearest_point[0] is None:
-                nearest_point = (point_id, calc_distance(
-                    self.avg_point, get_point_cords(point_id)))
-            else:
-                dist = calc_distance(self.avg_point, get_point_cords(point_id))
-                if dist < nearest_point[1]:
-                    nearest_point = (point_id, dist)
 
-        return nearest_point[0]
+        # # optimize this function
+        
+
+        # for point_id, _ in road_network.items():
+        #     if nearest_point[0] is None:
+        #         nearest_point = (point_id, calc_distance(
+        #             self.avg_point, get_point_cords(point_id, road_network)))
+        #     else:
+        #         dist = calc_distance(self.avg_point, get_point_cords(point_id, road_network))
+        #         if dist < nearest_point[1]:
+        #             nearest_point = (point_id, dist)
+
+        # return nearest_point[0]
+
+        for point_id, _ in road_network.items():
+            dist = calc_dist_meter(self.avg_point, get_point_cords(point_id, road_network))
+            if nearest_point[0] is None or dist < nearest_point[1]:
+                nearest_point = (point_id, dist)
