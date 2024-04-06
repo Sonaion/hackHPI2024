@@ -203,6 +203,9 @@ def load_solution(file):
                 lineCoordinatesLon.append(lon)
                 hover.append(val)
 
+                lineCoordinatesLat.append(None)
+                lineCoordinatesLon.append(None)
+
             if len(lineCoordinatesLat) == 0:
                 continue
 
