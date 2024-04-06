@@ -1,0 +1,21 @@
+[
+  {
+    "id": 0
+    children: [(101, dist), 102]}
+},
+  ...,,
+  {
+    "ids": 101,
+    children: [0, 0]}
+  }
+
+]
+
+
+{
+  "graph": [
+
+  ],
+  "buildings": [],
+  "free_fields": [],
+}
