@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"math"
 	"os"
+	"sort"
 )
 
 type Input struct {
@@ -135,6 +136,22 @@ type Residential struct {
 	Geometry []Point `json:"geometry"`
 }
 
+func median(data []float64) float64 {
+	dataCopy := make([]float64, len(data))
+	copy(dataCopy, data)
+	sort.Float64s(dataCopy)
+	var median float64
+	l := len(dataCopy)
+	if l == 0 {
+		return 0
+	} else if l%2 == 0 {
+		median = (dataCopy[l/2-1] + dataCopy[l/2]) / 2
+	} else {
+		median = dataCopy[l/2]
+	}
+	return median
+}
+
 func main() {
 	inputFile := "input.json"
 	// Read file as input.
@@ -153,9 +170,27 @@ func main() {
 	outputAreas := []OutputArea{}
 	outputRoads := []OutputRoad{}
 
+	buildingLats := []float64{}
+	buildingLons := []float64{}
 	for _, building := range input.Buildings {
 		central := centralPoint(building.Geometry)
+		buildingLats = append(buildingLats, central.Lat)
+		buildingLons = append(buildingLons, central.Lon)
+	}
 
+	// Calculate the median of the building lats and lons
+	buildingMedianLat := median(buildingLats)
+	buildingMedianLon := median(buildingLons)
+
+	filteredBuildings := BuildingMap{}
+
+	for key, building := range input.Buildings {
+		central := centralPoint(building.Geometry)
+		if math.Abs(central.Lat-buildingMedianLat) > 1 || math.Abs(central.Lon-buildingMedianLon) > 1 {
+			continue
+		}
+
+		filteredBuildings[key] = building
 		outputBuildings = append(outputBuildings, OutputBuilding{
 			ID:       len(outputBuildings),
 			Point:    central,
@@ -165,8 +200,28 @@ func main() {
 		})
 	}
 
+	input.Buildings = filteredBuildings
+
+	areaLats := []float64{}
+	areaLons := []float64{}
+
 	for _, area := range input.Areas {
 		central := centralPoint(area.Geometry)
+		areaLats = append(areaLats, central.Lat)
+		areaLons = append(areaLons, central.Lon)
+	}
+
+	// Calculate the median of the area lats and lons
+	areaMedianLat := median(areaLats)
+	areaMedianLon := median(areaLons)
+
+	filteredAreas := AreaMap{}
+
+	for _, area := range input.Areas {
+		central := centralPoint(area.Geometry)
+		if math.Abs(central.Lat-areaMedianLat) > 1 || math.Abs(central.Lon-areaMedianLon) > 1 {
+			continue
+		}
 
 		outputAreas = append(outputAreas, OutputArea{
 			ID:       len(outputBuildings) + len(outputAreas),
@@ -175,14 +230,42 @@ func main() {
 		})
 	}
 
+	input.Areas = filteredAreas
+
+	roadLats := []float64{}
+	roadLons := []float64{}
+
 	for _, road := range input.Highways {
-		for _, point := range road.Geometry {
-			outputRoads = append(outputRoads, OutputRoad{
-				ID:    len(outputBuildings) + len(outputAreas) + len(outputRoads),
-				Point: point,
-			})
+		central := centralPoint(road.Geometry)
+		roadLats = append(roadLats, central.Lat)
+		roadLons = append(roadLons, central.Lon)
+	}
+
+	// Calculate the median of the road lats and lons
+	roadMedianLat := median(roadLats)
+	roadMedianLon := median(roadLons)
+
+	filteredRoads := HighwayMap{}
+
+	for _, road := range input.Highways {
+		if len(road.Geometry) > 0 {
+			central := centralPoint(road.Geometry)
+			if math.Abs(central.Lat-roadMedianLat) > 1 || math.Abs(central.Lon-roadMedianLon) > 1 {
+				continue
+			}
+
+			filteredRoads[road.ID] = road
+
+			for _, point := range road.Geometry {
+				outputRoads = append(outputRoads, OutputRoad{
+					ID:    len(outputBuildings) + len(outputAreas) + len(outputRoads),
+					Point: point,
+				})
+			}
 		}
 	}
+
+	input.Highways = filteredRoads
 
 	outputNodes := []OutputNode{}
 
