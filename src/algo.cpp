@@ -154,7 +154,9 @@ int main() {
     cin.tie(nullptr);
     cout.precision(10);
 
-    ifstream data_file("../graph.json", std::ifstream::binary);
+    string dir = "../our_data/50";
+
+    ifstream data_file(dir + "/graph.json", std::ifstream::binary);
     json data;
     data_file >> data;
 
@@ -205,7 +207,7 @@ int main() {
         areas[i].area = areasJson[i].at("area");
     }
 
-    ifstream cluster_file("../clusters.json", std::ifstream::binary);
+    ifstream cluster_file(dir + "/clusters.json", std::ifstream::binary);
     json cluster_data;
     cluster_file >> cluster_data;
 
@@ -326,15 +328,21 @@ int main() {
                     if (id1 < buildings.size()) {
                         first = {buildings[id1].x, buildings[id1].y};
                     } else {
-                        id1 -= buildings.size();
+                        id1 -= buildings.size() + areas.size();
                         first = {roads[id1].x, roads[id1].y};
                     }
 
                     if (id2 < buildings.size()) {
                         second = {buildings[id2].x, buildings[id2].y};
                     } else {
-                        id2 -= buildings.size();
+                        id2 -= buildings.size() + areas.size();
                         second = {roads[id2].x, roads[id2].y};
+                    }
+
+                    if (first.first < 40 || first.first > 60  || first.second < 5 || first.second > 20) {
+                        cout << edge->from-2 << " " << edge->to-2 << endl;
+                    } else if (second.first < 40 || second.first > 60  || second.second < 5 || second.second > 20) {
+                        cout << edge->from-2 << " " << edge->to-2 << endl;
                     }
                     connections.push_back({first, second});
                 }
