@@ -50,12 +50,12 @@ type Consumption struct {
 }
 
 type CalcedConsumption struct {
-	minElectro  float64     `json:"min_electro"`
-	maxElectro  float64     `json:"max_electro"`
-	avgElectro  float64     `json:"avg_electro"`
-	minHeating  float64     `json:"min_heating"`
-	maxHeating  float64     `json:"max_heating"`
-	avgHeating  float64     `json:"avg_heating"`
+	MinElectro  float64     `json:"min_electro"`
+	MaxElectro  float64     `json:"max_electro"`
+	AvgElectro  float64     `json:"avg_electro"`
+	MinHeating  float64     `json:"min_heating"`
+	MaxHeating  float64     `json:"max_heating"`
+	AvgHeating  float64     `json:"avg_heating"`
 	Consumption Consumption `json:"consumption"`
 }
 
@@ -227,7 +227,9 @@ func main() {
 			avgElectroSummer += consumption
 		}
 
-		avgElectroSummer /= float64(len(building.SummerConsumption.Electro))
+		if avgElectroSummer != 0 {
+			avgElectroSummer /= float64(len(building.SummerConsumption.Electro))
+		}
 
 		for _, consumption := range building.SummerConsumption.Heating {
 			if consumption < minHeatingSummer {
@@ -239,7 +241,9 @@ func main() {
 			avgHeatingSummer += consumption
 		}
 
-		avgHeatingSummer /= float64(len(building.SummerConsumption.Heating))
+		if avgHeatingSummer != 0 {
+			avgHeatingSummer /= float64(len(building.SummerConsumption.Heating))
+		}
 
 		minElectroWinter := math.Inf(1)
 		maxElectroWinter := 0.0
@@ -259,7 +263,9 @@ func main() {
 			avgElectroWinter += consumption
 		}
 
-		avgElectroWinter /= float64(len(building.WinterConsumption.Electro))
+		if avgElectroWinter != 0 {
+			avgElectroWinter /= float64(len(building.WinterConsumption.Electro))
+		}
 
 		for _, consumption := range building.WinterConsumption.Heating {
 			if consumption < minHeatingWinter {
@@ -271,7 +277,25 @@ func main() {
 			avgHeatingWinter += consumption
 		}
 
-		avgHeatingWinter /= float64(len(building.WinterConsumption.Heating))
+		if avgHeatingWinter != 0 {
+			avgHeatingWinter /= float64(len(building.WinterConsumption.Heating))
+		}
+
+		if minElectroSummer == math.Inf(1) {
+			minElectroSummer = 0
+		}
+
+		if minHeatingSummer == math.Inf(1) {
+			minHeatingSummer = 0
+		}
+
+		if minElectroWinter == math.Inf(1) {
+			minElectroWinter = 0
+		}
+
+		if minHeatingWinter == math.Inf(1) {
+			minHeatingWinter = 0
+		}
 
 		filteredBuildings[key] = building
 		outputBuildings = append(outputBuildings, OutputBuilding{
@@ -281,21 +305,21 @@ func main() {
 			BaseArea: building.BaseArea,
 			Area:     building.Area,
 			WinterConsumption: CalcedConsumption{
-				minElectro:  minElectroWinter,
-				maxElectro:  maxElectroWinter,
-				avgElectro:  avgElectroWinter,
-				minHeating:  minHeatingWinter,
-				maxHeating:  maxHeatingWinter,
-				avgHeating:  avgHeatingWinter,
+				MinElectro:  minElectroWinter,
+				MaxElectro:  maxElectroWinter,
+				AvgElectro:  avgElectroWinter,
+				MinHeating:  minHeatingWinter,
+				MaxHeating:  maxHeatingWinter,
+				AvgHeating:  avgHeatingWinter,
 				Consumption: building.WinterConsumption,
 			},
 			SummerConsumption: CalcedConsumption{
-				minElectro:  minElectroSummer,
-				maxElectro:  maxElectroSummer,
-				avgElectro:  avgElectroSummer,
-				minHeating:  minHeatingSummer,
-				maxHeating:  maxHeatingSummer,
-				avgHeating:  avgHeatingSummer,
+				MinElectro:  minElectroSummer,
+				MaxElectro:  maxElectroSummer,
+				AvgElectro:  avgElectroSummer,
+				MinHeating:  minHeatingSummer,
+				MaxHeating:  maxHeatingSummer,
+				AvgHeating:  avgHeatingSummer,
 				Consumption: building.SummerConsumption,
 			},
 		})
