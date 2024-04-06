@@ -1,12 +1,11 @@
-from create_nodes import create_graph
-
 import json
 import numpy as np
 from sklearn.cluster import KMeans
 
 def main():
-    _, buildings, _, _ = create_graph()
-    coordinates = np.array([building.avg_point_arr for building in buildings])
+    data = json.load(open('./graph.json', 'r'))
+    buildings = data['buildings']
+    coordinates = np.array([[building['center']['lat'], building['center']['lon']] for building in buildings])
 
     # Choose the number of clusters (K)
     num_clusters = 20
