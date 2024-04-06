@@ -43,6 +43,8 @@ def render_main(map_style, used_areas, used_highways, used_buildings):
     highwayColorMapping = st.session_state.highwayColorMapping
 
     valuesPerArea = generate_dict_shapes(used_areas, st.session_state.areasObj, areaColorMapping)
+    # valuesPerResult = generate_dict_shapes(used_areas, st.session_state.areasObj, areaColorMapping)
+
     valuesPerHighway = generate_dict_shapes(used_highways, st.session_state.highwaysObj, highwayColorMapping, open=True)
     valuesPerBuilding = generate_dict_shapes(used_buildings, st.session_state.buildingsObj, buildingColorMapping)
 
@@ -131,6 +133,9 @@ def main():
     default_file_path = "./data/total_Potsdam.json"
     default_file = json.load(open(default_file_path, "r"))
 
+    result_file_path = "./data/output_example.json"
+    result_file = json.load(open(result_file_path, "r"))
+
     # Define a Store
     if "init" not in st.session_state:
         st.session_state.init = True
@@ -185,6 +190,26 @@ def main():
         buildings = list(buildings)
         sorted(buildings)
 
+        areas_results = {}
+        for id, obj in result_file["area"].items():
+            areas_results[id] = [supplier for supplier in obj["supplier"].keys()] + [storage for storage in obj["storage"].keys()]
+
+        buildings_results = {}
+        for id, obj in result_file["buildings"].items():
+            buildings_results[id] = [supplier for supplier in obj["supplier"].keys()] + [storage for storage in obj["storage"].keys()]
+
+        highways_results = {}
+        for obj in result_file["line"]:
+            for highway in highwaysObj:
+                for coordinate in highwaysObj.geometry:
+                    if coordinate.lat == obj["geometry"][0]["lat"] and coordinate.lon == obj["geometry"][0]["lon"]:
+                        id = highway
+                        break
+            if id not in highways_results:
+                highways_results[id] = []
+
+            highways_results[id].append(obj["kind"])
+
         areaColorMapping = {}
         for idx, area in enumerate(areas):
             areaColorMapping[area] = f"hsl(138, 100%, 50%)"
@@ -201,6 +226,10 @@ def main():
         st.session_state.areasObj = areaObj
         st.session_state.buildingsObj = buildingsObj
         st.session_state.highwaysObj = highwaysObj
+
+        st.session_state.areas_results = areas_results
+        st.session_state.buildings_results = buildings_results
+        st.session_state.highways_results = highways_results
 
         st.session_state.centroid = centroid
 

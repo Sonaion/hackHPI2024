@@ -17,6 +17,7 @@ class Building:
             winter_consumption['Heating']) if 'Heating' in winter_consumption else None
 
         self.points = points
+        self.factored_points = [{'lat': p['lat'], 'lon': p['lon']*1.585} for p in points]
         self.avg_point = self.calculate_avg_point()
         self.avg_point_arr = [self.avg_point['lat'], self.avg_point['lon']]
 
